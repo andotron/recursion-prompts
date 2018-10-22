@@ -7,8 +7,12 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
-	if(n === 1) {
-		return n;
+	if(n < 0) {
+		return null;
+	}
+
+	if(n === 1 || n === 0) {
+		return 1;
 	}
 
 	return n * (factorial(n-1));
@@ -18,7 +22,7 @@ var factorial = function(n) {
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
 	var sumArr = 0;
-	var arr = array;
+	var arr = array.slice();
     if(arr.length === 0) {
         return 0;
     }
@@ -47,6 +51,10 @@ var arraySum = function(array) {
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+	if(n < 1) {
+		n = Math.abs(n);
+	}
+
 	if(n === 0) {
 		return true;
 	} else if (n === 1) {
@@ -61,7 +69,6 @@ base case:
 if n === 0; return true;
 
 psuedo:
-%
 
 recursion case: 
 return isEven(n - 2)
@@ -72,9 +79,17 @@ return isEven(n - 2)
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
-	if(n === 2) {
-		return 1;
+	if(n < 0) {
+		return (n + 1) + sumBelow(n+1)
 	}
+
+	if(n === 0 || n === 1) {
+		return 0;
+	}
+
+	// if(n === 2) {
+	// 	return 1;
+	// }
 
 	return (n - 1) + sumBelow(n-1);
 };
@@ -162,7 +177,7 @@ var reverse = function(string) {
 	if(string.length === 0) {
 		return string[0];
 	}
-	return string.slice(string.length - 1) + reverse(string.slice(0, string.length -1);
+	return string.slice(string.length - 1) + reverse(string.slice(0, string.length -1));
 };
 
 // 10. Write a function that determines if a string is a palindrome.
