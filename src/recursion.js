@@ -96,12 +96,27 @@ var sumBelow = function(n) {
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
-var range = function(x, y) {
-	if(y === x + 1) {
+var range = function(x, y) { //x = 2, y = 9
+	if(y === x) {
 		return [];
+	}	
+
+	if(y > x) {
+		if(y === x + 1) { 
+			return [];
+		}
+		var result = range(x, y - 1);
+		result.push(y - 1);
 	}
-	var result = range(x,y-1);
-	result.push(y);
+
+	if(x > y) { //x = 7, y =2
+		if(x === y + 1) {
+			return [];
+		}
+		var result = range(x, y + 1);
+		result.push(y + 1);
+	}
+
 	return result;
 
 /*
@@ -128,10 +143,24 @@ var result = range(x, y -1);
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
-	if(exp === 1) {
-		return base;
+	if(exp === 0) {
+		return 1;
 	}
-	return base * (exponent(base, exp - 1));
+
+	if(exp > 0) { //19, 7
+		if(exp === 1) {
+			return base;
+		}
+		return base * base * (exponent(base, exp - 2)).toFixed(5); 
+	}
+
+
+	if(exp < 0) { //base = 4 exp = -2
+		if(exp === -1) {
+			return (1 / base);
+		}
+		return (1 / base) * (exponent(base, exp + 1)).toFixed(5);
+	}
 };
 
 
@@ -142,7 +171,7 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
-	if(n === 0 || n === 1) {
+	if(n === 1) {
 		return true;
 	} else if (n < 1) {
 		return false;
@@ -174,7 +203,7 @@ var powerOfTwo = function(n) {
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
-	if(string.length === 0) {
+	if(string.length === 1) {
 		return string[0];
 	}
 	return string.slice(string.length - 1) + reverse(string.slice(0, string.length -1));
@@ -182,14 +211,16 @@ var reverse = function(string) {
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
-	if(string[0] !== string[string.length -1]) {
+	var stringCap = string.toUpperCase();
+
+	if(stringCap[0] !== stringCap[stringCap.length -1]) {
 		return false;
 	} 
-	if(string.length < 2) {
+	if(stringCap.length < 2) {
 		return true;
 	}
 
-	return palindrome(string.slice(1, string.length -1));
+	return palindrome(stringCap.slice(1, stringCap.length -1));
 
 
 	/*
@@ -221,8 +252,81 @@ var palindrome = function(string) {
 // modulo(5,2) // 1
 // modulo(17,5) // 2
 // modulo(22,6) // 4
+	/*
+	input: 2 numbers x and y;
+	output: the remainder
+	psuedo: 
+	everytime x gets divided by y, pass new number into modulo function
+	when Y can no longer fit in X, subtract x by 7 and return that number
+
+	basecase:
+	if(x / y != 0) {
+		
+	}
+	recursion:
+	return modulo(x-y);
+	*/
+
 var modulo = function(x, y) {
+	if(y === 0) {
+		return NaN;
+	}
+
+	if(x === 0) {
+		return 0;
+	}
+		
+	if(x > 0 && y > 0) {
+		if(y > x) {
+			return x;
+		}
+		if(x === y) {
+			return 0;
+		}
+
+		if(x > y) {
+			if((x - y) < y) {
+				return (x - y);
+			} else if ((x - y) === y) { 
+				return modulo((x - y), y);
+			}
+			return modulo((x - y), y);		
+		}		
+	}
+
+	if(x < 0 && y < 0) {
+		if(x > y) {
+			return x;
+		}
+		if(x === y){
+			return 0;
+		}
+		if(x < y) {
+			if((x - y) > y) {
+				return (x - y);
+			} else if((x - y) === y) {
+				return modulo((x - y), y);
+			}
+			return modulo(modulo((x-y), y));
+		}
+	}
+	
+	if(x < 0 && y > 0) { 
+		if(-x < y) {
+			return x;
+		}
+		if((x + y) > - y) {
+			return (x + y)
+		} else if ((x + y) === -y) {
+			return modulo((x + y), y);
+		}
+		return modulo((x + y), y);
+			
+	}
+
+
 };
+
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
